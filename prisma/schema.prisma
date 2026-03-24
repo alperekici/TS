@@ -464,7 +464,6 @@ model profiles {
   full_name              String?
   phone                  String?
   role                   String?   @default("user")
-  role                   String?  @default("user")
   balance                Decimal?  @default(0.00) @db.Decimal(10, 2)
   is_active              Boolean?  @default(true)
   iban                   String?
