@@ -32,7 +32,7 @@ import {
   CheckSquare
 } from 'lucide-react';
 
-const API_BASE_URL = 'https://powers-influenced-mpegs-productive.trycloudflare.com';
+const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
 
 const RECENT_ACTIVITIES = [
   { id: 1, type: 'approve', user: 'Admin', target: 'Araştırma Onaylandı', time: '2 saat önce' },
