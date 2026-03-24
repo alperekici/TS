@@ -57,7 +57,7 @@ export class SurveysService {
             this.prisma.surveys.count({ where: { status: 'paused' } }),
             this.prisma.surveys.count({ where: { status: 'completed' } }),
             this.prisma.profiles.count(),
-            this.prisma.profiles.count({ where: { is_researcher: true } }),
+            this.prisma.profiles.count({ where: { role: 'researcher' } }),
         ]);
 
         const platformDataGroups = await this.prisma.surveys.groupBy({

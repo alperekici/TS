@@ -42,7 +42,6 @@ export class SupabaseAuthGuard implements CanActivate {
                 userId: data.user.id,
                 email: data.user.email,
                 role: profile.role,
-                is_researcher: profile.is_researcher,
             };
 
             return true;

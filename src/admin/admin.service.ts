@@ -51,10 +51,4 @@ export class AdminService {
         if (!profile) throw new NotFoundException('User profile not found');
         return this.prisma.profiles.update({ where: { id }, data: { role } });
     }
-
-    async setResearchPermission(id: string, is_researcher: boolean) {
-        const profile = await this.prisma.profiles.findUnique({ where: { id } });
-        if (!profile) throw new NotFoundException('User profile not found');
-        return this.prisma.profiles.update({ where: { id }, data: { is_researcher } });
-    }
 }

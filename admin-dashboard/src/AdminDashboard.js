@@ -291,22 +291,6 @@ function UsersPage({ token }) {
     }
   };
 
-  const handleResearcherToggle = async (userId, currentVal) => {
-    try {
-      const res = await fetch(`${API_BASE_URL}/admin/users/${userId}/research-permission`, {
-        method: 'PATCH',
-        headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
-        body: JSON.stringify({ is_researcher: !currentVal }),
-      });
-      if (res.ok) {
-        setUsers((prev) => prev.map((u) => (u.id === userId ? { ...u, is_researcher: !currentVal } : u)));
-        if (userDetails && userDetails.id === userId) setUserDetails({ ...userDetails, is_researcher: !currentVal });
-      }
-    } catch (err) {
-      console.error('Error toggling researcher:', err);
-    }
-  };
-
   useEffect(() => { fetchUsers(); }, [searchQuery, roleFilter]);
 
   // Role counts
@@ -473,11 +457,6 @@ function UsersPage({ token }) {
                       <span className={`px-3 py-1 rounded-full text-[10px] font-black border uppercase tracking-wider ${rc}`}>
                         {u.role === 'ADMIN' ? 'Yönetici' : u.role === 'researcher' ? 'Araştırmacı' : 'Kullanıcı'}
                       </span>
-                      {u.is_researcher && u.role !== 'researcher' && (
-                        <span className="px-3 py-1 rounded-full text-[10px] font-black border uppercase tracking-wider bg-green-500/10 text-green-500 border-green-500/20">
-                          Araştırmacı
-                        </span>
-                      )}
                       {u.is_active === false && (
                         <span className="px-3 py-1 rounded-full text-[10px] font-black border uppercase tracking-wider bg-red-500/10 text-red-500 border-red-500/20">
                           Pasif
@@ -588,22 +567,6 @@ function UsersPage({ token }) {
                         </button>
                       ))}
                     </div>
-                  </div>
-
-                  {/* Researcher Toggle */}
-                  <div className="space-y-4">
-                    <h4 className="text-sm font-black text-white uppercase tracking-widest flex items-center gap-3">
-                      <FileText className="w-5 h-5 text-orange-500" /> Araştırma İzni
-                    </h4>
-                    <button
-                      onClick={() => handleResearcherToggle(userDetails.id, userDetails.is_researcher)}
-                      className={`w-full py-4 rounded-2xl font-black text-sm transition-all ${userDetails.is_researcher
-                          ? 'bg-green-600 hover:bg-green-500 text-white shadow-lg shadow-green-900/20'
-                          : 'bg-slate-950 border border-slate-800 text-slate-400 hover:text-white hover:border-slate-700'
-                        }`}
-                    >
-                      {userDetails.is_researcher ? '✓ Araştırma İzni Var — Kaldırmak İçin Tıkla' : '✕ Araştırma İzni Yok — Vermek İçin Tıkla'}
-                    </button>
                   </div>
 
                   {/* User's Surveys */}

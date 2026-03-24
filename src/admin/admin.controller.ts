@@ -1,7 +1,7 @@
 import { Controller, Get, Patch, Param, Body, Query, UseGuards, ParseUUIDPipe } from '@nestjs/common';
 import { ApiTags, ApiBearerAuth, ApiOperation, ApiQuery } from '@nestjs/swagger';
 import { AdminService } from './admin.service';
-import { AssignRoleDto, SetResearchPermissionDto } from './dto/admin.dto';
+import { AssignRoleDto } from './dto/admin.dto';
 import { SupabaseAuthGuard } from '../auth/supabase-auth.guard';
 import { RolesGuard } from '../auth/roles.guard';
 import { Roles } from '../auth/roles.decorator';
@@ -47,11 +47,5 @@ export class AdminController {
     @ApiOperation({ summary: 'Assign a role to a user' })
     assignRole(@Param('id', ParseUUIDPipe) id: string, @Body() assignRoleDto: AssignRoleDto) {
         return this.adminService.assignRole(id, assignRoleDto.role);
-    }
-
-    @Patch('users/:id/research-permission')
-    @ApiOperation({ summary: 'Grant or revoke research creation permission' })
-    setResearchPermission(@Param('id', ParseUUIDPipe) id: string, @Body() dto: SetResearchPermissionDto) {
-        return this.adminService.setResearchPermission(id, dto.is_researcher);
     }
 }
