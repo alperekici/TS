@@ -35,7 +35,7 @@ import {
   Send
 } from 'lucide-react';
 
-const API_BASE_URL = 'http://localhost:3005';
+const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:3005';
 
 const GENDER_OPTIONS = ['Hepsi', 'Kadın', 'Erkek', 'Diğer'];
 const AGE_OPTIONS = ['Hepsi', '18-24', '25-34', '35-44', '45-54', '55+'];
@@ -2644,7 +2644,7 @@ export default function AdminDashboard() {
                             const splitCSV = (line) => {
                               const sep = line.includes('\t') ? '\t' : ',';
                               if (sep === '\t') return line.split('\t').map(s => s.trim().replace(/^"|"$/g, ''));
-                              
+
                               const result = [];
                               let current = '';
                               let inQuotes = false;
@@ -2736,20 +2736,20 @@ export default function AdminDashboard() {
                                       <span className="text-white font-bold text-sm font-black leading-tight">
                                         {p.metadata?.shadow ? 'External Guest' : (p.users?.profiles?.full_name || 'İsimsiz')}
                                       </span>
-                                      
+
                                       {/* Classification Badges */}
                                       {!p.metadata?.shadow && p.users?.profiles?.full_name ? (
-                                         <span className="px-1.5 py-0.5 bg-emerald-500/10 text-emerald-500 border border-emerald-500/20 rounded-[4px] text-[7px] font-black uppercase tracking-tighter shadow-sm">Verified Member</span>
+                                        <span className="px-1.5 py-0.5 bg-emerald-500/10 text-emerald-500 border border-emerald-500/20 rounded-[4px] text-[7px] font-black uppercase tracking-tighter shadow-sm">Verified Member</span>
                                       ) : p.status === 'approved' ? (
-                                         <span className="px-1.5 py-0.5 bg-blue-500/10 text-blue-500 border border-blue-500/20 rounded-[4px] text-[7px] font-black uppercase tracking-tighter shadow-sm">Verified Guest</span>
+                                        <span className="px-1.5 py-0.5 bg-blue-500/10 text-blue-500 border border-blue-500/20 rounded-[4px] text-[7px] font-black uppercase tracking-tighter shadow-sm">Verified Guest</span>
                                       ) : (
-                                         <span className="px-1.5 py-0.5 bg-slate-500/10 text-slate-500 border border-slate-500/10 rounded-[4px] text-[7px] font-black uppercase tracking-tighter opacity-60">Guest</span>
+                                        <span className="px-1.5 py-0.5 bg-slate-500/10 text-slate-500 border border-slate-500/10 rounded-[4px] text-[7px] font-black uppercase tracking-tighter opacity-60">Guest</span>
                                       )}
 
                                       {p.metadata?.imported && (
-                                         <span className="px-1.5 py-0.5 bg-orange-500/10 text-orange-500 border border-orange-500/20 rounded-[4px] text-[7px] font-black uppercase tracking-tighter shadow-sm">CSV Import</span>
+                                        <span className="px-1.5 py-0.5 bg-orange-500/10 text-orange-500 border border-orange-500/20 rounded-[4px] text-[7px] font-black uppercase tracking-tighter shadow-sm">CSV Import</span>
                                       )}
-                                      
+
                                       <div className={`flex items-center gap-1 px-1.5 py-0.5 rounded-full text-[8px] font-black border ${(p.users?.profiles?.trust_score || 0) >= 80 ? 'bg-emerald-500/10 text-emerald-500 border-emerald-500/20' :
                                         (p.users?.profiles?.trust_score || 0) >= 50 ? 'bg-orange-500/10 text-orange-500 border-orange-500/20' :
                                           'bg-red-500/10 text-red-500 border-red-500/20'
@@ -2759,14 +2759,14 @@ export default function AdminDashboard() {
                                       </div>
                                     </div>
                                     <span className="text-slate-500 text-[10px] font-black mt-0.5">
-                                      { p.metadata?.shadow ? `Kod: ${p.unique_id || p.metadata?.unique_id || '—'}` : (p.users?.email || '—') }
+                                      {p.metadata?.shadow ? `Kod: ${p.unique_id || p.metadata?.unique_id || '—'}` : (p.users?.email || '—')}
                                     </span>
                                     <span className="text-emerald-500 text-[9px] font-mono font-black mt-1 opacity-80">{p.users?.profiles?.iban || '—'}</span>
-                                    
+
                                     {p.metadata?.validation_errors && p.metadata.validation_errors.length > 0 && (
-                                       <div className="mt-1 text-[8px] text-red-400 font-bold leading-tight bg-red-400/5 p-1 rounded border border-red-400/10">
-                                         {p.metadata.validation_errors.join(', ')}
-                                       </div>
+                                      <div className="mt-1 text-[8px] text-red-400 font-bold leading-tight bg-red-400/5 p-1 rounded border border-red-400/10">
+                                        {p.metadata.validation_errors.join(', ')}
+                                      </div>
                                     )}
                                   </div>
                                 </td>
@@ -2880,7 +2880,7 @@ export default function AdminDashboard() {
                                   <div className="flex items-center gap-2 mb-1">
                                     <div className="text-white font-bold text-xs font-black">{row.full_name}</div>
                                     {row.is_shadow && (
-                                       <span className="px-1.5 py-0.5 bg-blue-500/10 text-blue-500 border border-blue-500/20 rounded-[4px] text-[7px] font-black uppercase tracking-tighter shadow-sm">Verified Guest</span>
+                                      <span className="px-1.5 py-0.5 bg-blue-500/10 text-blue-500 border border-blue-500/20 rounded-[4px] text-[7px] font-black uppercase tracking-tighter shadow-sm">Verified Guest</span>
                                     )}
                                   </div>
                                   <div className="text-slate-500 text-[9px] font-black">{row.email}</div>
