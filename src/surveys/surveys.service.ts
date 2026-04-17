@@ -714,13 +714,13 @@ export class SurveysService {
             where: { id: surveyId }
         });
 
-        if (!survey || !survey.target_audience || survey.status === 'completed') return;
+        if (!survey || !(survey as any).target_audience || survey.status === 'completed') return;
 
         const approvedCount = await this.prisma.submissions.count({
             where: { survey_id: surveyId, status: 'approved' }
         });
 
-        if (approvedCount >= survey.target_audience) {
+        if (approvedCount >= (survey as any).target_audience) {
             await this.prisma.surveys.update({
                 where: { id: surveyId },
                 data: { status: 'completed' }
