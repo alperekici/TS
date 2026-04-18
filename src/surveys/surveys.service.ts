@@ -298,6 +298,7 @@ export class SurveysService {
         if (updateData?.survey_link) data.survey_link = updateData.survey_link;
         if (updateData?.platform) data.platform = updateData.platform;
         if (updateData?.total_cost !== undefined) data.total_cost = updateData.total_cost;
+        if (updateData?.target_audience !== undefined) data.target_audience = updateData.target_audience;
 
         // Parse demographic fields gracefully strings -> arrays
         // "hepsi" means "all" = no filter, so we store an empty array
@@ -474,7 +475,7 @@ export class SurveysService {
         }
 
         for (const row of csvRows) {
-            const match = submissions.find(s => {
+            const match = submissions.find((s: any) => {
                 if (row.unique_id && (s as any).unique_id) return (s as any).unique_id === row.unique_id;
                 if (row.email && (s as any).users?.email) return (s as any).users.email.toLowerCase() === row.email.toLowerCase();
                 return false;
@@ -530,11 +531,11 @@ export class SurveysService {
         return {
             survey_title: survey.title,
             reward_amount: survey.reward_amount,
-            rows: subs.map(s => {
+            rows: submissions.map((s: any) => {
                 const metadata = (s.metadata as any) || {};
                 const isShadow = metadata.shadow === true || metadata.new_shadow === true;
                 const participantCode = metadata.unique_id || '';
-                
+
                 return {
                     full_name: isShadow ? `Guest (Code: ${participantCode})` : (s.full_name || s.full_name_bank || s.email || '—'),
                     tc_identity_number: isShadow ? '—' : (s.tc_identity_number || '—'),
@@ -568,7 +569,7 @@ export class SurveysService {
             }
 
             let submission = (submissions as any[]).find(s => String(s.unique_id || s.metadata?.unique_id || '').trim() === String(uniqueId).trim());
-            
+
             if (!submission) {
                 try {
                     const realUser = await this.findUserByParticipantCode(uniqueId);
@@ -581,12 +582,12 @@ export class SurveysService {
                             survey_id: surveyId,
                             user_id: userId,
                             status: 'pending',
-                            metadata: { 
-                                unique_id: uniqueId, 
-                                imported: true, 
+                            metadata: {
+                                unique_id: uniqueId,
+                                imported: true,
                                 shadow: isShadow,
                                 new_shadow: isShadow, // Tag specifically for UI classification
-                                raw_data: row 
+                                raw_data: row
                             }
                         }
                     });
@@ -629,7 +630,7 @@ export class SurveysService {
             }
 
             const status = isFlagged ? 'rejected' : 'approved';
-            
+
             // Local duplicate detection (seenIds)
             let finalStatus = status;
             if (finalStatus === 'approved') {
@@ -647,7 +648,7 @@ export class SurveysService {
                     status: finalStatus as any,
                     metadata: {
                         ...(submission.metadata as any || {}),
-                        unique_id: uniqueId, 
+                        unique_id: uniqueId,
                         validation_errors: messages
                     }
                 }
